@@ -39,7 +39,6 @@ fn rb_hundred_doors(...) callconv(.C) ruby.VALUE {
 }
 
 export fn Init_libzig_rb() void {
-    ruby.ruby_init();
     var zig_rb_class: ruby.VALUE = ruby.rb_define_class("ZigRb", ruby.rb_cObject);
     _ = ruby.rb_define_method(zig_rb_class, "hundred_doors", rb_hundred_doors, 1);
 }
