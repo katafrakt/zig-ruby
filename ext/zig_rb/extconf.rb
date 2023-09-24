@@ -5,6 +5,6 @@ config = RbConfig::CONFIG
 File.open(makefile_path, "w") do |f|
   f.puts <<~MFILE
 all:
-\tRUBY_LIBDIR=#{config["libdir"]} RUBY_HDRDIR=#{config["rubyhdrdir"]} RUBY_ARCHHDRDIR=#{config["rubyarchhdrdir"]} zig build
+\tRUBY_LIBDIR=#{config["libdir"]} RUBY_HDRDIR=#{config["rubyhdrdir"]} RUBY_ARCHHDRDIR=#{config["rubyarchhdrdir"]} zig build -Doptimize=ReleaseFast
 MFILE
 end
