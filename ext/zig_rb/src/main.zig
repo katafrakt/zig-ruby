@@ -29,17 +29,17 @@ fn rb_hundred_doors(...) callconv(.C) ruby.VALUE {
     defer @cVaEnd(&ap);
 
     // first argument is `self`, but we don't use it so we need to discard it
-    var self = @cVaArg(&ap, ruby.VALUE);
+    const self = @cVaArg(&ap, ruby.VALUE);
     _ = self;
 
     // back and forth conversion from Ruby types to internal types + delegation to
     // actual `hundred_doors` function
-    var passes = ruby.NUM2INT(@cVaArg(&ap, ruby.VALUE));
+    const passes = ruby.NUM2INT(@cVaArg(&ap, ruby.VALUE));
     return ruby.INT2NUM(hundred_doors(passes));
 }
 
 export fn Init_libzig_rb() void {
-    var zig_rb_class: ruby.VALUE = ruby.rb_define_class("ZigRb", ruby.rb_cObject);
+    const zig_rb_class: ruby.VALUE = ruby.rb_define_class("ZigRb", ruby.rb_cObject);
     _ = ruby.rb_define_method(zig_rb_class, "hundred_doors", rb_hundred_doors, 1);
 }
 
