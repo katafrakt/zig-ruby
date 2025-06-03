@@ -1,20 +1,20 @@
 const std = @import("std");
 
-pub fn build(b: *std.build.Builder) void {
+pub fn build(b: *std.Build) void {
     // Standard release options allow the person running `zig build` to select
     // between Debug, ReleaseSafe, ReleaseFast, and ReleaseSmall.
     const target = b.standardTargetOptions(.{});
     const optimize = b.standardOptimizeOption(.{});
 
-    const lib = b.addSharedLibrary(.{ .name = "zig_rb", .root_source_file = .{ .path = "src/main.zig" }, .version = .{ .major = 0, .minor = 0, .patch = 1 }, .optimize = optimize, .target = target });
+    const lib = b.addSharedLibrary(.{ .name = "zig_rb", .root_source_file = b.path("src/main.zig"), .version = .{ .major = 0, .minor = 0, .patch = 1 }, .optimize = optimize, .target = target });
 
     // Ruby stuff
-    var ruby_libdir = std.os.getenv("RUBY_LIBDIR") orelse "";
-    lib.addLibraryPath(.{ .path = ruby_libdir });
-    var ruby_hdrdir = std.os.getenv("RUBY_HDRDIR") orelse "";
-    lib.addIncludePath(.{ .path = ruby_hdrdir });
-    var ruby_archhdrdir = std.os.getenv("RUBY_ARCHHDRDIR") orelse "";
-    lib.addIncludePath(.{ .path = ruby_archhdrdir });
+    const ruby_libdir = std.posix.getenv("RUBY_LIBDIR") orelse "";
+    lib.addLibraryPath(std.Build.LazyPath{ .cwd_relative = ruby_libdir });
+    const ruby_hdrdir = std.posix.getenv("RUBY_HDRDIR") orelse "";
+    lib.addIncludePath(std.Build.LazyPath{ .cwd_relative = ruby_hdrdir });
+    const ruby_archhdrdir = std.posix.getenv("RUBY_ARCHHDRDIR") orelse "";
+    lib.addIncludePath(std.Build.LazyPath{ .cwd_relative = ruby_archhdrdir });
 
     lib.linkSystemLibrary("c");
     b.installArtifact(lib);
