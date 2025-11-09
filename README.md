@@ -38,8 +38,7 @@ Please note that this is only one benchmark, not much science behind it. It does
 
 ## How to run it
 
-1. You need fairly recent version of Zig, which at this time means a version built from git
+1. Have Zig version 0.15.2 available on your system
 2. Clone this repo
+3. Run `rake compile_ext`
 3. Run `rake benchmark`
-
-Note that it likely only works on Linux, I'd gladly 

@@ -6,7 +6,18 @@ pub fn build(b: *std.Build) void {
     const target = b.standardTargetOptions(.{});
     const optimize = b.standardOptimizeOption(.{});
 
-    const lib = b.addSharedLibrary(.{ .name = "zig_rb", .root_source_file = b.path("src/main.zig"), .version = .{ .major = 0, .minor = 0, .patch = 1 }, .optimize = optimize, .target = target });
+    const mod = b.addModule("zig_rb", .{
+        .root_source_file = b.path("src/main.zig"),
+        .target = target,
+        .optimize = optimize,
+    });
+
+    const lib = b.addLibrary(.{
+        .root_module = mod,
+        .name = "zig_rb",
+        .version = .{ .major = 0, .minor = 0, .patch = 1 },
+        .linkage = .dynamic,
+    });
 
     // Ruby stuff
     const ruby_libdir = std.posix.getenv("RUBY_LIBDIR") orelse "";
